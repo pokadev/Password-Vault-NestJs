@@ -1,7 +1,12 @@
+import { FastifyInstance } from 'fastify';
 import createServer from './utils/createServer';
 import logger from './utils/logger';
 
-
+function gracefulShutdown(signal:string, app: FastifyInstance){
+  process.on(signal, async () => {
+    logger.info(`Received ${signal} signal, shutting down`);
+  })
+}
 
 async function main(){
 const app = createServer()
