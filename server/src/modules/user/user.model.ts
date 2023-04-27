@@ -1,9 +1,9 @@
-import { getModelForClass, prop, pre } from "@typegoose/typegoose";
+import { getModelForClass, pre, prop } from "@typegoose/typegoose";
 import { argon2d } from "argon2";
 
 @pre<User>("save", async function (next) {
   if (!this.isModified("password") || this.isNew) {
-    const hash = await argon2d.hash(this.password);
+    const hash = (await argon2d.hash(this.password));
 
     this.password = hash;
 
