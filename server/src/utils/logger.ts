@@ -1,9 +1,12 @@
 import pino from "pino";
 
 const logger = pino({
-  prettyPrint: {
-    ignore: "hostname",
+  transport: {
+    target: "pino-pretty",
   },
+  options:{
+    ignore:'hostname',
+  }
 });
 
 export default logger;
