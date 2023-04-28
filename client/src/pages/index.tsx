@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import Vault from "../components/Vault";
@@ -12,9 +12,25 @@ export interface VaultItem {
 }
 
 export default function Home() {
-  const [step, setStep] = useState<"login" | "register" | "vault">("register");
+  const [step, setStep] = useState<"login" | "register" | "vault">("vault");
   const [vault, setVault] = useState<VaultItem[]>([]);
   const [vaultKey,setVaultKey]=useState('')
+
+
+
+  useEffect(() => {
+    const vault = window.sessionStorage.getItem("vault");
+    const vaultKey = window.sessionStorage.getItem("vk");
+
+    if (vault) {
+      setVault(JSON.parse(vault));
+    }
+
+    if (vaultKey) {
+      setVaultKey(vaultKey);
+      setStep("vault");
+    }
+  }, []);
 
   return (
     <>
@@ -29,7 +45,7 @@ export default function Home() {
           <RegisterForm setStep={setStep} setVaultKey={setVaultKey} />
         )}
         {step === "login" && <LoginForm />}
-        {step === "vault" && <Vault />}
+        {step === "vault" && <Vault vault={vault} vaultKey={vaultKey} />}
       </main>
     </>
   );

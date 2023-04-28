@@ -23,7 +23,7 @@ async function main() {
   const app = createServer();
 
   try {
-    const url = await app.listen(4000, "0.0.0.0");
+    const url = await app.listen(4000, "127.0.0.1");
     logger.info(`Server listening on ${url}`);
   } catch (err) {
     logger.error(err);
