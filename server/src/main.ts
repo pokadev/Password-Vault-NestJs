@@ -1,11 +1,14 @@
 import { FastifyInstance } from "fastify";
+import { connect } from 'mongoose';
 import createServer from "./utils/createServer";
-import { disconnectFromDb } from "./utils/db";
+import { connectToDb, disconnectFromDb } from "./utils/db";
 import logger from "./utils/logger";
 
 function gracefulShutdown(signal: string, app: FastifyInstance) {
   process.on(signal, async () => {
     logger.info(`Received ${signal} signal, shutting down`);
+
+    await connectToDb()
 
     app.close();
 

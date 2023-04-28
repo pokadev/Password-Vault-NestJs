@@ -10,8 +10,12 @@ import FormWrapper from "./FormWrapper";
 import { generateVaultKey, hashPassword } from '../../crypto';
 import { useMutation } from 'react-query';
 import { registerUser } from '../api';
+import { Dispatch, SetStateAction } from 'react';
+import { VaultItem } from '../pages';
 
-function RegisterForm() {
+function RegisterForm({ setStep, setVaultKey }: {setVaultKey: Dispatch<SetStateAction<string>>;
+setStep: Dispatch<SetStateAction<"login" | "register" | "vault">>;
+}) {
   const {
     handleSubmit,
     register,
@@ -29,7 +33,10 @@ function RegisterForm() {
         email, salt
       })
       window.sessionStorage.setItem('vk', vaultKey)
+      setVaultKey(vaultKey)
       window.sessionStorage.setItem("vault",'')
+
+      setStep('vault')
     }
   })
 
@@ -38,12 +45,16 @@ function RegisterForm() {
 
   <FormWrapper
     onSubmit={handleSubmit(() => {
-
+      const email = getValues("email");
       const password = getValues("password");
 
       const hashedPassword = hashPassword(password)
 
       setValue('hashedPassword', hashedPassword)
+
+      mutation.mutate({
+        email, hashedPassword
+      })
     })}
   >
     <Heading>Register</Heading>
@@ -87,6 +98,9 @@ function RegisterForm() {
         {errors.email && errors.email.message}
       </FormErrorMessage>
     </FormControl>
+    <button type='submit'>
+      Register
+    </button>
   </FormWrapper>
   )
 }

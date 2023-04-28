@@ -5,9 +5,17 @@ import RegisterForm from "../components/RegisterForm";
 import Vault from "../components/Vault";
 import styles from "../styles/Home.module.css";
 
+export interface VaultItem {
+  website: string,
+  username: string,
+  password: string
+}
+
 export default function Home() {
   const [step, setStep] = useState<"login" | "register" | "vault">("register");
-  
+  const [vault, setVault] = useState<VaultItem[]>([]);
+  const [vaultKey,setVaultKey]=useState('')
+
   return (
     <>
       <Head>
@@ -17,7 +25,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {step === "register" && <RegisterForm />}
+        {step === "register" && (
+          <RegisterForm setStep={setStep} setVaultKey={setVaultKey} />
+        )}
         {step === "login" && <LoginForm />}
         {step === "vault" && <Vault />}
       </main>

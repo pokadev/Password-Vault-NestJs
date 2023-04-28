@@ -8,8 +8,11 @@ export function generateSalt() {
 
 //create a user
 export async function createUser (input: {
-  encryptPassword: string
+  hashedPassword: string
   email: string
 }){
-  return await UserModel.create(input)
+  return await UserModel.create({
+    email: input.email,
+    password: input.hashedPassword,
+  })
 }
