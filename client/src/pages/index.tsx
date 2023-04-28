@@ -3,10 +3,11 @@ import { useState } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import Vault from "../components/Vault";
-
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [step, setStep] = useState<"login" | "register" | "vault">("register");
+  
   return (
     <>
       <Head>
@@ -15,7 +16,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className={styles.main}>
         {step === "register" && <RegisterForm />}
         {step === "login" && <LoginForm />}
         {step === "vault" && <Vault />}
